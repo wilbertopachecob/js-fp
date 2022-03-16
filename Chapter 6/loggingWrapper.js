@@ -1,11 +1,9 @@
 const addLogging =
-  (fn) =>
+  (fn, logger = console.log) =>
   (...args) => {
-    console.log(
-      `starting logging for function ${fn.name} with arguments ${args}`
-    );
+    logger(`starting logging for function ${fn.name} with arguments ${args}`);
     const result = fn(...args);
-    console.log(
+    logger(
       `ending logging for function ${fn.name} with return value ${result}`
     );
     return result;
