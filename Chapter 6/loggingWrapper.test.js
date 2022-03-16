@@ -24,4 +24,14 @@ describe("addLogging", () => {
 
     expect(dummy.logger).toHaveBeenCalledTimes(2);
   });
+
+  test(`should throw an error`, () => {
+    const broken = () => {
+      throw new Error("this was a mistake");
+    };
+    const fnToLog = addLogging(broken, dummy.logger);
+    expect(() => {
+      fnToLog();
+    }).toThrow();
+  });
 });
