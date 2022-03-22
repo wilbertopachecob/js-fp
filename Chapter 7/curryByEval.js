@@ -8,7 +8,7 @@ const curryByEval = (fn, len = fn.length) =>
       .map((n) => `x${n}`)
       .join(",")})`
   );
-// first one doen not work if function have no name so
+// first one does not work if function have no name so
 const curryByEval2 = (fn, len = fn.length) =>
   eval(
     `${range(0, len)
