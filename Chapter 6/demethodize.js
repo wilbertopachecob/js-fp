@@ -18,4 +18,6 @@ const map = demethodize1(Array.prototype.map);
 const toUpperCase = demethodize1(String.prototype.toUpperCase);
 
 const result = map(name, toUpperCase);
-console.log(result);
+// console.log(result);
+
+module.exports = demethodize1;
