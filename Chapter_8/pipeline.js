@@ -23,14 +23,10 @@ const pipelineDeclarative2 =
   (...fns) =>
   (...args) =>
     fns.reduce((acc, fn) => fn(acc), fns.shift()(...args));
-// fns.reduce((acc, fn, i) => {
-//   console.log({ i });
-//   return fn(acc);
-// }, fns[0](...args));
 
 const double = (x) => x * 2;
 
-console.log(pipelineDeclarative2(double, double, double)(2));
+// console.log(pipelineDeclarative2(double, double, double)(2));
 //(...args) => ((...args) => f(g(...args))(g(...args))
 
 module.exports = pipeline2;
