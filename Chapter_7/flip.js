@@ -1,4 +1,4 @@
-const demethodize = require("../Chapter 6/demethodize");
+const demethodize = require("../Chapter_6/demethodize");
 const curryBind = require("./curryBind");
 const partialByClosure = require("./partialByClosure");
 const partialCurrying = require("./partialCurrying");
