@@ -1,4 +1,4 @@
-const range = require("../Chapter 5/range.js");
+const range = require("../Chapter_5/range.js");
 
 const partialByEval = (fn, ...args) =>
   eval(
