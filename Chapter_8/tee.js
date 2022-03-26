@@ -1,7 +1,6 @@
 const tap = require("./tap");
 
 //debugging pipeline
-tap;
 const tee = (arg, logger = console.log.bind(console)) => (logger(arg), arg);
 const tee2 = tap(console.log);
 
