@@ -7,3 +7,5 @@ const deepFreeze = (obj) => {
   }
   return obj;
 };
+
+module.exports = deepFreeze;
