@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@types/jest": "^27.4.1",
+    "axios": "^0.26.1",
+    "dotenv": "^16.0.0",
     "fs": "^0.0.1-security",
     "jsdom": "^19.0.0"
   }
