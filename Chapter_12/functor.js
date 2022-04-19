@@ -33,4 +33,4 @@ class Functor extends Container {
   }
 }
 
-module.exports = { Functor, VALUE };
+module.exports = { Functor, VALUE, Container };
