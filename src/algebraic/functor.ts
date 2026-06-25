@@ -1,52 +1,43 @@
-export const VALUE = Symbol("value");
+/**
+ * Base wrapper for values that support `map`.
+ */
+export class Functor<T> {
+  constructor(public readonly value: T) {}
 
-type Valued<T> = Record<symbol, T>;
+  static of<U>(value: U): Functor<U> {
+    return new Functor(value);
+  }
 
-export class Container<T> {
-  constructor(value: T) {
-    (this as Valued<T>)[VALUE] = value;
+  /** Applies a function to the inner value. */
+  map<R>(fn: (value: T) => R): Functor<R> {
+    return new Functor(fn(this.value));
   }
 
   toString(): string {
-    return `${this.constructor.name}(${(this as Valued<T>)[VALUE]})`;
+    return `${this.constructor.name}(${this.value})`;
   }
 
   valueOf(): T {
-    return (this as Valued<T>)[VALUE];
+    return this.value;
   }
 }
 
-export class Functor<T> extends Container<T> {
-  static of<U>(x: U): Functor<U> {
-    return new Functor(x);
-  }
-
-  map<R>(fn: (value: T) => R): Functor<R> {
-    return Functor.of(fn(this.valueOf()));
-  }
-}
-
+/**
+ * A functor that also supports `chain` (flatMap).
+ */
 export class Monad<T> extends Functor<T> {
-  static override of<U>(x: U): Monad<U> {
-    return new Monad(x);
+  static override of<U>(value: U): Monad<U> {
+    return new Monad(value);
   }
 
   override map<R>(fn: (value: T) => R): Monad<R> {
-    return Monad.of(fn(this.valueOf()));
+    return Monad.of(fn(this.value));
   }
 
-  unwrap(): Monad<T> {
-    return this;
-  }
-
+  /** Runs a function that returns another wrapper and flattens it. */
   chain<R>(fn: (value: T) => Functor<R>): Functor<R> {
-    return fn(this.valueOf());
-  }
-
-  ap<R>(m: Functor<(arg: T) => R>): Functor<R> {
-    const fn = m.valueOf();
-    return Functor.of(fn(this.valueOf()));
+    return fn(this.value);
   }
 }
 
-export { VALUE as defaultValueSymbol };
+export class Container<T> extends Functor<T> {}

@@ -1,11 +1,19 @@
-/** Generic function type used across utilities. */
+/**
+ * A plain function type used by several utilities.
+ */
 export type AnyFn = (...args: unknown[]) => unknown;
 
-/** Reducer used by transducers. */
+/**
+ * Accumulator function used when reducing a list (for example with transducers).
+ */
 export type Reducer<V, A> = (acc: A, val: V) => A;
 
-/** Transducer transforms a reducer over inner type to a reducer over outer type. */
+/**
+ * A transducer changes how values flow into a reducer.
+ */
 export type Transducer<T, U, A> = (reducer: Reducer<U, A>) => Reducer<T, A>;
 
-/** Path segment for immutable object access. */
+/**
+ * Object path as `"a.b.c"` or `["a", "b", "c"]`.
+ */
 export type PathInput = string | readonly (string | number)[];

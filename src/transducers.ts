@@ -1,25 +1,44 @@
 import type { Reducer, Transducer } from "./types";
 
-export const concat = <T>(acc: T[], val: T): T[] => (acc.push(val), acc);
+/**
+ * Adds one value to an array accumulator.
+ */
+export function concat<T>(acc: T[], value: T): T[] {
+  acc.push(value);
+  return acc;
+}
 
-export const mapTransducer =
-  <T, U, A>(transformFn: (val: T) => U): Transducer<T, U, A> =>
-  (reducer) =>
-  (acc, val) =>
-    reducer(acc, transformFn(val));
+/**
+ * Transducer that maps each value before it reaches the reducer.
+ */
+export function mapTransducer<T, U, A>(
+  mapFn: (value: T) => U
+): Transducer<T, U, A> {
+  return (reducer) => (acc, value) => reducer(acc, mapFn(value));
+}
 
-export const filterTransducer =
-  <T, A>(predicate: (val: T) => boolean): Transducer<T, T, A> =>
-  (reducer) =>
-  (acc, val) =>
-    predicate(val) ? reducer(acc, val) : acc;
+/**
+ * Transducer that keeps only values that pass the test.
+ */
+export function filterTransducer<T, A>(
+  test: (value: T) => boolean
+): Transducer<T, T, A> {
+  return (reducer) => (acc, value) => {
+    if (!test(value)) {
+      return acc;
+    }
+    return reducer(acc, value);
+  };
+}
 
-export const composeTransducers =
-  <T, U, A>(
-    transducerOne: Transducer<T, U, A>,
-    transducerTwo: Transducer<U, U, A>
-  ): Transducer<T, U, A> =>
-  (reducingFn) =>
-    transducerOne(transducerTwo(reducingFn));
+/**
+ * Combines two transducers into one pipeline.
+ */
+export function composeTransducers<T, U, A>(
+  first: Transducer<T, U, A>,
+  second: Transducer<U, U, A>
+): Transducer<T, U, A> {
+  return (reducer) => first(second(reducer));
+}
 
 export type { Reducer, Transducer };

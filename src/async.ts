@@ -1,43 +1,69 @@
-export const mapAsync = <T, R>(
+/**
+ * Runs an async function for every item and waits for all results.
+ */
+export async function mapAsync<T, R>(
   arr: readonly T[],
-  fn: (value: T, index: number, array: readonly T[]) => R | Promise<R>
-): Promise<R[]> => Promise.all(arr.map(fn));
+  fn: (value: T, index: number) => R | Promise<R>
+): Promise<R[]> {
+  const results: R[] = [];
 
-export const filterAsync = async <T>(
-  arr: readonly T[],
-  fn: (value: T, index: number, array: readonly T[]) => boolean | Promise<boolean>
-): Promise<T[]> => {
-  const results = await mapAsync(arr, fn);
-  return arr.filter((_, i) => Boolean(results[i]));
-};
-
-const forEachAsync = async <T>(
-  arr: readonly T[],
-  fn: (value: T, index: number) => void | Promise<void>
-): Promise<void> => {
-  for (let i = 0; i < arr.length; i++) {
-    await fn(arr[i], i);
+  for (let index = 0; index < arr.length; index++) {
+    results.push(await fn(arr[index], index));
   }
-};
 
-export const reduceAsync = async <T, R>(
+  return results;
+}
+
+/**
+ * Keeps items where the async test returns `true`.
+ */
+export async function filterAsync<T>(
   arr: readonly T[],
-  fn: (acc: R | Promise<R>, value: T, index: number) => R | Promise<R>,
-  init: R
-): Promise<R> => {
-  let acc: R | Promise<R> = init;
-  await forEachAsync(arr, async (v, i) => {
-    acc = await fn(acc, v, i);
-  });
+  fn: (value: T, index: number) => boolean | Promise<boolean>
+): Promise<T[]> {
+  const kept: T[] = [];
+
+  for (let index = 0; index < arr.length; index++) {
+    if (await fn(arr[index], index)) {
+      kept.push(arr[index]);
+    }
+  }
+
+  return kept;
+}
+
+/**
+ * Reduces an array one async step at a time.
+ */
+export async function reduceAsync<T, R>(
+  arr: readonly T[],
+  fn: (acc: R, value: T, index: number) => R | Promise<R>,
+  initialValue: R
+): Promise<R> {
+  let acc = initialValue;
+
+  for (let index = 0; index < arr.length; index++) {
+    acc = await fn(acc, arr[index], index);
+  }
+
   return acc;
-};
+}
 
-export const findAsync = async <T, R>(
+/**
+ * Maps items asynchronously, then returns the first item whose mapped
+ * value passes `isMatch`.
+ */
+export async function findAsync<T, R>(
   arr: readonly T[],
-  fnAsync: (value: T, index: number) => R | Promise<R>,
-  fnFind: (value: R, index: number) => boolean
-): Promise<T | undefined> => {
-  const mapped = await Promise.all(arr.map(fnAsync));
-  const index = mapped.findIndex(fnFind);
-  return index < 0 ? undefined : arr[index];
-};
+  mapFn: (value: T, index: number) => R | Promise<R>,
+  isMatch: (mappedValue: R, index: number) => boolean
+): Promise<T | undefined> {
+  for (let index = 0; index < arr.length; index++) {
+    const mappedValue = await mapFn(arr[index], index);
+    if (isMatch(mappedValue, index)) {
+      return arr[index];
+    }
+  }
+
+  return undefined;
+}

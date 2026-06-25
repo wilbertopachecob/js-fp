@@ -1,93 +1,126 @@
+/** Simple function type for wrappers like memoize and once. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Fn = (...args: any[]) => any;
 
-export const memoize = <T extends Fn>(fn: T): T => {
-  const cache: Record<string, unknown> = {};
-  const primitives = new Set(["number", "string", "boolean"]);
+/**
+ * Stores the result of a function so repeated calls with the same
+ * arguments return the cached value.
+ *
+ * @example
+ * const slowDouble = (n: number) => n * 2;
+ * const fastDouble = memoize(slowDouble);
+ * fastDouble(5); // computes
+ * fastDouble(5); // reads from cache
+ */
+export function memoize<T extends Fn>(fn: T): T {
+  const cache = new Map<string, unknown>();
 
-  return ((...args: unknown[]) => {
-    const key =
-      args.length === 1 && primitives.has(typeof args[0])
-        ? String(args[0])
-        : JSON.stringify(args);
-    if (key in cache) {
-      return cache[key];
+  const memoized = (...args: unknown[]) => {
+    const key = JSON.stringify(args);
+
+    if (cache.has(key)) {
+      return cache.get(key);
     }
+
     const result = fn(...args);
-    cache[key] = result;
+    cache.set(key, result);
     return result;
-  }) as T;
-};
+  };
 
-export const once = (fn: Fn): Fn => {
-  let done = false;
-  return (...args: unknown[]) => {
-    if (!done) {
-      done = true;
+  return memoized as T;
+}
+
+/**
+ * Wraps a function so it runs only the first time it is called.
+ */
+export function once(fn: Fn): Fn {
+  let hasRun = false;
+
+  return (...args) => {
+    if (!hasRun) {
+      hasRun = true;
       fn(...args);
     }
   };
-};
+}
 
-export const onceAndAfter = (fn: Fn, g: Fn): Fn => {
-  let done = false;
-  return (...args: unknown[]) => {
-    if (!done) {
-      done = true;
-      fn(...args);
-    } else {
-      g(...args);
+/**
+ * Runs `first` only once. Every later call runs `next`.
+ */
+export function onceAndAfter(first: Fn, next: Fn): Fn {
+  let hasRun = false;
+
+  return (...args) => {
+    if (!hasRun) {
+      hasRun = true;
+      first(...args);
+      return;
     }
+    next(...args);
   };
-};
+}
 
-export const loggingWrapper = <T extends Fn>(
+/**
+ * Logs when a function starts, finishes, or throws an error.
+ */
+export function loggingWrapper<T extends Fn>(
   fn: T,
-  logger: (...args: unknown[]) => void = console.log
-): T =>
-  ((...args: unknown[]) => {
-    logger(`starting logging for function ${fn.name} with arguments ${args}`);
+  logger: (...messages: unknown[]) => void = console.log
+): T {
+  const wrapped = (...args: unknown[]) => {
+    logger(`calling ${fn.name}`, args);
     try {
       const result = fn(...args);
-      logger(
-        `ending logging for function ${fn.name} with return value ${result}`
-      );
+      logger(`returned from ${fn.name}`, result);
       return result;
     } catch (error) {
-      logger(`ending logging for function ${fn.name}: threw error ${error}`);
+      logger(`error in ${fn.name}`, error);
       throw error;
     }
-  }) as T;
+  };
 
-type CallbackFn<T> = (
-  ...args: [...unknown[], (err: Error | null, data: T) => void]
-) => void;
+  return wrapped as T;
+}
 
-export const promisify =
-  <T>(fn: CallbackFn<T>) =>
-  (...args: unknown[]): Promise<T> =>
-    new Promise((resolve, reject) =>
-      fn(...args, (err, data) => (err ? reject(err) : resolve(data)))
-    );
+/**
+ * Turns a callback-style function into one that returns a Promise.
+ *
+ * @example
+ * const readFilePromise = promisify(fs.readFile);
+ * await readFilePromise("file.txt", "utf8");
+ */
+export function promisify<T>(fn: (...args: any[]) => void) {
+  return (...args: unknown[]): Promise<T> =>
+    new Promise((resolve, reject) => {
+      fn(...args, (error: Error | null, result: T) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(result);
+      });
+    });
+}
 
-export const addTiming = <T extends Fn>(
+/**
+ * Logs how long a function takes to run.
+ */
+export function addTiming<T extends Fn>(
   fn: T,
   timer: () => number = () => performance.now(),
-  logger: (text: string, fnName: string, start: number, end: number) => void = (
-    text,
-    fnName,
-    start,
-    end
-  ) => console.log(`${fnName} - ${text} - ${end - start}`)
-): T =>
-  ((...args: unknown[]) => {
+  logger: (message: string) => void = (message) => console.log(message)
+): T {
+  const wrapped = (...args: unknown[]) => {
     const start = timer();
     try {
       const result = fn(...args);
-      logger("normal exit", fn.name, start, timer());
+      logger(`${fn.name} took ${timer() - start}ms`);
       return result;
     } catch (error) {
-      logger("exception thrown", fn.name, start, timer());
+      logger(`${fn.name} failed after ${timer() - start}ms`);
       throw error;
     }
-  }) as T;
+  };
+
+  return wrapped as T;
+}

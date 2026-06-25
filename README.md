@@ -25,7 +25,7 @@ npm run demo -- memoize
 |------|---------|
 | [`src/`](src/) | TypeScript source — the public API |
 | [`dist/`](dist/) | Compiled JavaScript + `.d.ts` declarations |
-| [`tests/`](tests/) | TypeScript unit tests (Jest + ts-jest) |
+| [`tests/`](tests/) | TypeScript unit tests grouped by topic (47 tests) |
 | [`examples/`](examples/) | Runnable demos |
 | [`bin/js-fp.js`](bin/js-fp.js) | CLI for running demos |
 | [`Chapter_*/`](Chapter_1/) | Original book exercises in JavaScript (reference) |
@@ -61,7 +61,7 @@ const { memoize, compose, Maybe } = require('js-fp');
 |---------|-------------|
 | `npm run build` | Compile `src/` → `dist/` |
 | `npm test` | Run tests (requires prior build) |
-| `npm run test:all` | Build + test |
+| `npm run test:all` | Build + run 47 unit tests |
 | `npm run demo -- <name>` | Run a CLI demo |
 | `npm run docs` | Generate TypeDoc into `docs/` |
 

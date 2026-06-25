@@ -1,11 +1,18 @@
-import { Either, EitherLike } from "./either";
+import { Either, EitherValue } from "./either";
 
+/**
+ * Runs a function safely and returns an Either instead of throwing.
+ *
+ * @example
+ * Try.of(() => 42).isLeft(); // false
+ * Try.of(() => { throw new Error("fail"); }).isLeft(); // true
+ */
 export class Try {
-  static of<R>(fn: () => R, msg?: string): EitherLike<unknown, R> {
+  static of<R>(fn: () => R, errorMessage?: string): EitherValue<unknown, R> {
     try {
-      return Either.of(null, fn()) as EitherLike<unknown, R>;
+      return Either.of(null, fn());
     } catch (error) {
-      return Either.of(msg ?? error, null) as EitherLike<unknown, R>;
+      return Either.of(errorMessage ?? error, null) as EitherValue<unknown, R>;
     }
   }
 }

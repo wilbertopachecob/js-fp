@@ -1,83 +1,124 @@
 import type { PathInput } from "./types";
 
-export const deepClone = <T>(obj: T): T => {
-  if (obj !== null && typeof obj === "object") {
-    const copy = new ((obj as object).constructor as new () => T)();
-    for (const prop of Object.getOwnPropertyNames(obj)) {
-      (copy as Record<string, unknown>)[prop] = deepClone(
-        (obj as Record<string, unknown>)[prop]
-      );
+/**
+ * Creates a deep copy of objects and arrays.
+ */
+export function deepClone<T>(value: T): T {
+  if (value === null || typeof value !== "object") {
+    return value;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => deepClone(item)) as T;
+  }
+
+  const copy: Record<string, unknown> = {};
+
+  for (const key of Object.keys(value)) {
+    copy[key] = deepClone((value as Record<string, unknown>)[key]);
+  }
+
+  return copy as T;
+}
+
+/**
+ * Freezes an object and every nested object inside it.
+ */
+export function deepFreeze<T extends object>(obj: T): T {
+  Object.freeze(obj);
+
+  for (const value of Object.values(obj)) {
+    if (value && typeof value === "object") {
+      deepFreeze(value);
     }
-    return copy;
   }
+
   return obj;
-};
+}
 
-export const deepFreeze = <T extends object>(obj: T): T => {
-  if (obj && !Object.isFrozen(obj)) {
-    Object.freeze(obj);
-    for (const prop of Object.getOwnPropertyNames(obj)) {
-      const value = (obj as Record<string, unknown>)[prop];
-      if (value && typeof value === "object") {
-        deepFreeze(value as object);
-      }
-    }
+/**
+ * Turns a path string or array into path segments.
+ *
+ * @example
+ * getPath("user.name"); // ["user", "name"]
+ */
+export function getPath(path: PathInput): string[] {
+  if (Array.isArray(path)) {
+    return path.map(String);
   }
-  return obj;
-};
 
-export const getPath = (path: PathInput): (string | number)[] => {
-  if (!(Array.isArray(path) || typeof path === "string")) {
-    throw new Error("invalid type for path. Accepted types: Array | String");
+  if (typeof path === "string") {
+    return path.split(".");
   }
-  return Array.isArray(path) ? [...path] : path.split(".");
-};
 
-export const getByPath = <T = unknown>(
+  throw new Error("Path must be a string or an array");
+}
+
+/**
+ * Reads a nested value without changing the original object.
+ *
+ * @example
+ * getByPath(["user", "name"], { user: { name: "Ada" } }); // "Ada"
+ */
+export function getByPath<T = unknown>(
   path: PathInput,
   obj: Record<string, unknown>
-): T | undefined => {
+): T | undefined {
   const segments = getPath(path);
-  const loop = (arr: (string | number)[], current: Record<string, unknown>): T | undefined => {
-    const key = String(arr[0]);
-    if (key in current) {
-      return arr.length > 1
-        ? loop(arr.slice(1), current[key] as Record<string, unknown>)
-        : deepClone(current[key]) as T;
+  let current: unknown = obj;
+
+  for (const segment of segments) {
+    if (current === null || typeof current !== "object") {
+      return undefined;
     }
-    return undefined;
-  };
-  return loop(segments, obj);
-};
 
-export const setByPath = <T extends Record<string, unknown>>(
+    current = (current as Record<string, unknown>)[segment];
+  }
+
+  return deepClone(current) as T;
+}
+
+/**
+ * Sets a nested value on a copy-friendly object structure.
+ * Creates missing objects or arrays when needed.
+ */
+export function setByPath<T extends Record<string, unknown>>(
   path: PathInput,
   value: unknown,
   obj: T
-): T => {
+): T {
   const segments = getPath(path);
-  const key = String(segments[0]);
-  if (!(key in obj)) {
-    (obj as Record<string, unknown>)[key] =
-      segments.length === 1 ? null : Number.isInteger(segments[1]) ? [] : {};
-  }
-  if (segments.length > 1) {
-    return setByPath(
-      segments.slice(1),
-      value,
-      (obj as Record<string, unknown>)[key] as T
-    );
-  }
-  (obj as Record<string, unknown>)[key] = value;
-  return obj;
-};
+  let current: Record<string, unknown> = obj;
 
-export const updateObject = <T extends Record<string, unknown>>(
+  for (let index = 0; index < segments.length; index++) {
+    const key = segments[index];
+    const isLast = index === segments.length - 1;
+
+    if (isLast) {
+      current[key] = value;
+      break;
+    }
+
+    if (!(key in current)) {
+      const nextKey = segments[index + 1];
+      current[key] = /^\d+$/.test(nextKey) ? [] : {};
+    }
+
+    current = current[key] as Record<string, unknown>;
+  }
+
+  return obj;
+}
+
+/**
+ * Returns a new frozen object with one nested value updated.
+ */
+export function updateObject<T extends Record<string, unknown>>(
   path: PathInput,
   value: unknown,
   obj: T
-): T => {
-  const newObject = deepClone(obj);
-  setByPath(path, value, newObject);
-  return deepFreeze(newObject);
-};
+): T {
+  const clone = deepClone(obj);
+  setByPath(path, value, clone);
+  return deepFreeze(clone);
+}
