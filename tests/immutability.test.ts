@@ -5,7 +5,7 @@ import {
   getByPath,
   setByPath,
   updateObject,
-} from "../src/immutability";
+} from "@/immutability";
 
 describe("immutability utilities", () => {
   it("deepClone creates independent copies", () => {

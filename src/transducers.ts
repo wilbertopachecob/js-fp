@@ -1,4 +1,4 @@
-import type { Reducer, Transducer } from "./types";
+import type { Reducer, Transducer } from "@/types";
 
 /**
  * Adds one value to an array accumulator.

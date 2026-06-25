@@ -1,4 +1,4 @@
-import { Functor } from "./functor";
+import { Functor } from "@/algebraic/functor";
 
 /** Represents a missing value. */
 class Nothing extends Functor<null> {

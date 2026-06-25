@@ -3,7 +3,7 @@ import {
   mapTransducer,
   filterTransducer,
   composeTransducers,
-} from "../src/transducers";
+} from "@/transducers";
 
 describe("transducers", () => {
   it("concat adds values to an accumulator array", () => {

@@ -1,4 +1,4 @@
-import { Functor } from "./functor";
+import { Functor } from "@/algebraic/functor";
 
 /** Common shape for Either values. */
 export interface EitherValue<L, R> {

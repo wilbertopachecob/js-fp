@@ -1,7 +1,7 @@
-import { Functor, Monad } from "../src/algebraic/functor";
-import { Maybe } from "../src/algebraic/maybe";
-import { Either } from "../src/algebraic/either";
-import { Try } from "../src/algebraic/try";
+import { Functor, Monad } from "@/algebraic/functor";
+import { Maybe } from "@/algebraic/maybe";
+import { Either } from "@/algebraic/either";
+import { Try } from "@/algebraic/try";
 
 describe("algebraic types", () => {
   it("Functor maps a value", () => {

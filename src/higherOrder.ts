@@ -1,5 +1,4 @@
 /** Simple function type for wrappers like memoize and once. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Fn = (...args: any[]) => any;
 
 /**

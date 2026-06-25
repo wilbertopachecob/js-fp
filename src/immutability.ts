@@ -1,4 +1,4 @@
-import type { PathInput } from "./types";
+import type { PathInput } from "@/types";
 
 /**
  * Creates a deep copy of objects and arrays.

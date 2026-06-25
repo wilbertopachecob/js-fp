@@ -5,7 +5,7 @@ import {
   loggingWrapper,
   promisify,
   addTiming,
-} from "../src/higherOrder";
+} from "@/higherOrder";
 
 describe("higher-order utilities", () => {
   it("memoize caches repeated calls", () => {

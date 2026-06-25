@@ -1,4 +1,4 @@
-import { myMap, flatAll, range, shuffle } from "../src/arrays";
+import { myMap, flatAll, range, shuffle } from "@/arrays";
 
 describe("array utilities", () => {
   it("myMap transforms every item", () => {

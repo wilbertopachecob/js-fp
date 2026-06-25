@@ -1,4 +1,4 @@
-import { Either, EitherValue } from "./either";
+import { Either, EitherValue } from "@/algebraic/either";
 
 /**
  * Runs a function safely and returns an Either instead of throwing.

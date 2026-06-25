@@ -3,7 +3,7 @@ import {
   filterAsync,
   reduceAsync,
   findAsync,
-} from "../src/async";
+} from "@/async";
 
 describe("async utilities", () => {
   it("mapAsync waits for every mapped value", async () => {

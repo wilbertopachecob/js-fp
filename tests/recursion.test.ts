@@ -3,7 +3,7 @@ import {
   quicksort,
   mapRecursive,
   filterRecursive,
-} from "../src/recursion";
+} from "@/recursion";
 
 describe("recursion utilities", () => {
   it("fibonacci returns expected values", () => {

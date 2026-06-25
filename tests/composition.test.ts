@@ -4,7 +4,7 @@ import {
   pipeTwo,
   tee,
   tap,
-} from "../src/composition";
+} from "@/composition";
 
 describe("composition", () => {
   it("pipeTwo runs f then g", () => {

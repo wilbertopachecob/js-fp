@@ -4,7 +4,7 @@ import {
   partialByClosure,
   flip,
   flip3,
-} from "../src/currying";
+} from "@/currying";
 
 describe("currying", () => {
   const sum3 = (a: number, b: number, c: number) => a + b + c;

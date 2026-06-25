@@ -55,15 +55,34 @@ CommonJS:
 const { memoize, compose, Maybe } = require('js-fp');
 ```
 
+## Path aliases
+
+Imports use the `@/` alias instead of long relative paths:
+
+```typescript
+import { memoize } from "@/higherOrder";
+import { Maybe } from "@/algebraic/maybe";
+```
+
+Configured in:
+- [`tsconfig.json`](tsconfig.json) — TypeScript path mapping
+- [`webpack.config.js`](webpack.config.js) — Webpack `resolve.alias`
+- [`jest.config.js`](jest.config.js) — Jest `moduleNameMapper`
+
+The build runs `tsc-alias` so compiled `dist/` files use relative paths at runtime.
+
 ## Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run build` | Compile `src/` → `dist/` |
+| `npm run build` | Compile `src/` → `dist/` (rewrites `@/` aliases) |
+| `npm run build:webpack` | Bundle with Webpack using `@` → `src` alias |
 | `npm test` | Run tests (requires prior build) |
 | `npm run test:all` | Build + run 47 unit tests |
 | `npm run demo -- <name>` | Run a CLI demo |
 | `npm run docs` | Generate TypeDoc into `docs/` |
+| `npm run lint` | Run ESLint on `src/`, `tests/`, and config files |
+| `npm run lint:fix` | Auto-fix ESLint issues where possible |
 
 ## API catalog
 
