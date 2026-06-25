@@ -4,7 +4,6 @@
  */
 
 const deepClone = require("./deepClone");
-const deepFreeze = require("./deepFreeze");
 const getPath = require("./getPath");
 
 /**

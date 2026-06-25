@@ -1,6 +1,10 @@
 const partialByEval = require("./partialByEval");
 
-nonsense = (a, b, c, d, e) => `${a}/${b}/${c}/${d}/${e}`;
+// partialByEval calls the function by name via eval, so it must exist on globalThis.
+globalThis.nonsense = function nonsense(a, b, c, d, e) {
+  return `${a}/${b}/${c}/${d}/${e}`;
+};
+const nonsense = globalThis.nonsense;
 
 describe("partialByEval - ", () => {
   it("should work with all parameters", () => {

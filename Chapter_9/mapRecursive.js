@@ -18,6 +18,8 @@ const mapRecursive = (orig, cb) => {
       return [];
     }
     if (!(0 in arr)) {
+      // Preserve sparse holes when mapping recursively.
+      // eslint-disable-next-line no-sparse-arrays -- intentional hole for sparse arrays
       return [,].concat(mapLoop(arr.slice(1), i + 1));
     }
     return [cb(arr[0], i, orig)].concat(mapLoop(arr.slice(1), i + 1));

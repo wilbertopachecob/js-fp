@@ -16,9 +16,6 @@ const findOptimum = (fn) => (arr) => arr.reduce(fn);
 const findMaximum = findOptimum((x, y) => (x > y ? x : y));
 const findMinimum = findOptimum((x, y) => (x < y ? x : y));
 
-const findMaximum2 = findOptimum((x, y) => Math.max(x, y));
-const findMinimum2 = findOptimum((x, y) => Math.min(x, y));
-
 module.exports = findOptimum;
 
 if (require.main === module) {

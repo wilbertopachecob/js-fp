@@ -41,7 +41,7 @@ const flatN1 = (arr, n) => {
     return flatAll(arr);
   }
   let result = arr;
-  range(0, n).forEach((_) => {
+  range(0, n).forEach(() => {
     result = flatOne(result);
   });
   return result;

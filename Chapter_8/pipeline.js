@@ -10,13 +10,6 @@
  */
 const pipeTwo = require("./pipeTwo");
 
-const pipeline = (...fns) =>
-  fns.reduce(
-    (f, g) =>
-      (...args) =>
-        g(f(...args))
-  );
-
 const pipeline2 = (...fns) => fns.reduce(pipeTwo);
 
 const pipelineDeclarative =

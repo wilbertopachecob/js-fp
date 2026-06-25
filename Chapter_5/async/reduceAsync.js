@@ -18,7 +18,7 @@ const reduceAsync = (arr, fn, init) =>
   Promise.resolve(init).then((acc) =>
     foreachAsync(arr, async (v, i) => {
       acc = await fn(acc, v, i);
-    }).then((_) => acc)
+    }).then(() => acc)
   );
 
 module.exports = reduceAsync;

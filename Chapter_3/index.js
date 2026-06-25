@@ -8,11 +8,6 @@
  */
 
 const fn = (msg) => console.log(msg);
-const obj = {
-  fn: (msg) => {
-    console.log(msg);
-  },
-};
 
 if (require.main === module) {
   const myPromise = new Promise((resolve) => {

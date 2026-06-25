@@ -3,6 +3,15 @@ import jest from "eslint-plugin-jest";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
+const unusedVarsRule = [
+  "error",
+  {
+    argsIgnorePattern: "^_",
+    varsIgnorePattern: "^_",
+    caughtErrorsIgnorePattern: "^_",
+  },
+];
+
 export default tseslint.config(
   {
     ignores: [
@@ -10,7 +19,6 @@ export default tseslint.config(
       "docs/**",
       "coverage/**",
       "node_modules/**",
-      "Chapter_*/**",
     ],
   },
   eslint.configs.recommended,
@@ -25,10 +33,8 @@ export default tseslint.config(
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
-      ],
+      "@typescript-eslint/no-unused-vars": unusedVarsRule,
+      "no-unused-vars": "off",
     },
   },
   {
@@ -42,9 +48,18 @@ export default tseslint.config(
     },
   },
   {
+    files: ["Chapter_*/**/*.test.js"],
+    languageOptions: {
+      globals: jest.environments.globals.globals,
+    },
+  },
+  {
     files: ["**/*.js", "**/*.mjs", "**/*.cjs"],
     languageOptions: {
       globals: globals.node,
+    },
+    rules: {
+      "no-unused-vars": unusedVarsRule,
     },
   }
 );
