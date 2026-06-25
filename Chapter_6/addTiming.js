@@ -3,7 +3,7 @@ const myLogger = (text, fnName, start, end) => {
 };
 const myTimer = () => performance.now();
 
-const addTimming =
+const addTiming =
   (fn, timer = myTimer, logger = myLogger) =>
   (...args) => {
     const start = timer();
@@ -17,6 +17,4 @@ const addTimming =
     }
   };
 
-let sum = (x, y) => x + y;
-sum = addTimming(sum);
-sum(1, 2);
+module.exports = addTiming;

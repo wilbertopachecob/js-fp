@@ -30,3 +30,4 @@ const double = (x) => x * 2;
 //(...args) => ((...args) => f(g(...args))(g(...args))
 
 module.exports = pipeline2;
+module.exports.pipeline = pipeline2;

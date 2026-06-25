@@ -1,0 +1,14 @@
+[
+  { "name": "memoize", "description": "Memoized Fibonacci — cache demo" },
+  { "name": "compose", "description": "Compose two string transforms" },
+  { "name": "pipeline", "description": "Pipeline double then add one" },
+  { "name": "maybe", "description": "Maybe monad map chain" },
+  { "name": "either", "description": "Either Left vs Right" },
+  { "name": "try", "description": "Try wrapping exceptions as Either" },
+  { "name": "quicksort", "description": "Quicksort a sample array" },
+  { "name": "myMap", "description": "Functional map implementation" },
+  { "name": "flatAll", "description": "Deep flatten nested arrays" },
+  { "name": "shuffle", "description": "Shuffle an array" },
+  { "name": "range", "description": "Generate a numeric range" },
+  { "name": "either-weather", "description": "Fetch weather via fetch + Either (needs API key)", "file": "either-weather.js" }
+]

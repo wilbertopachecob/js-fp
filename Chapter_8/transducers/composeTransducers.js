@@ -19,9 +19,3 @@ const result = [1, 2, 3, 4].reduce(reducingFn, []);
 
 module.exports = composeTransducers;
 
-/////////////////////////////////////////////////////
-const toUpperCase = (x) => x.toUpperCase();
-const toUpperCaseTransducer = mapTransducer(toUpperCase);
-const reducingFn4 = toUpperCaseTransducer(concat);
-const result4 = ["a", "b", "c"].reduce(reducingFn4, []);
-// console.log(result4);

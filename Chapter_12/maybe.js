@@ -39,8 +39,3 @@ class Maybe extends Functor {
 }
 
 module.exports = Maybe;
-
-const plus1 = (x) => x + 1;
-
-console.log(Maybe.of(2112).map(plus1).map(plus1).toString());
-console.log(Maybe.of(null).map(plus1).map(plus1).toString());
