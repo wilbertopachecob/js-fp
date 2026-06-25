@@ -1,45 +1,83 @@
+/**
+ * @module Chapter_10/lenses/lensWithObj
+ */
+
 let setField = require("../../Chapter_6/setField");
 const getField = require("../../Chapter_6/getField");
 const curry = require("../../Chapter_7/curryBind2");
 setField = curry(setField);
 
+/**
+ * Builds a lens from getter and setter functions.
+ *
+ * @param {Function} getter - `(obj) => value`
+ * @param {Function} setter - Curried `(value) => (obj) => newObj`
+ * @returns {{ getter: Function, setter: Function }} Lens object.
+ * @example
+ * const lens = lensWithObj(getField("x"), setField("x"));
+ */
 const lensWithObj = (getter, setter) => ({
   getter,
   setter,
 });
 
+/**
+ * Lens focused on a single object property.
+ *
+ * @param {string} attr - Property name.
+ * @returns {{ getter: Function, setter: Function }} Property lens.
+ * @example
+ * view(lensProp("user"))({ user: "Ada" }); // "Ada"
+ */
 const lensProp = (attr) => lensWithObj(getField(attr), setField(attr));
 
+/**
+ * Reads the focus of a lens.
+ *
+ * @param {{ getter: Function }} lens - Lens object.
+ * @param {object} obj - Target object.
+ * @returns {*} Focused value.
+ * @example
+ * view(lensProp("name"))({ name: "Ada" }); // "Ada"
+ */
 const view = curry((lens, obj) => lens.getter(obj));
 
-const author = {
-  user: "fkereki",
-  name: {
-    first: "Federico",
-    middle: "",
-    last: "Kereki",
-  },
-  books: [
-    { name: "Google Web Toolkit", year: 2010 },
-    { name: "Functional Programming", year: 2017 },
-    { name: "Javascript Cookbook", year: 2018 },
-  ],
-};
-
-// const lens = lensProp("user");
-
-// console.log(view(lens)(author));
-
+/**
+ * Sets the focus of a lens to a new value.
+ *
+ * @param {{ setter: Function }} lens - Lens object.
+ * @param {*} newValue - Value to set.
+ * @param {object} obj - Target object.
+ * @returns {object} Updated object.
+ * @example
+ * set(lensProp("user"))("Bob")({ user: "Ada" }); // { user: "Bob" }
+ */
 const set = curry((lens, newValue, obj) => lens.setter(newValue)(obj));
 
-// console.log(set(lens)("Wilberto")(author));
-
+/**
+ * Maps a function over the lens focus.
+ *
+ * @param {{ getter: Function, setter: Function }} lens - Lens object.
+ * @param {Function} mapFn - Function applied to the focused value.
+ * @param {object} obj - Target object.
+ * @returns {object} Updated object.
+ * @example
+ * over(lensProp("n"))((x) => x + 1)({ n: 1 }); // { n: 2 }
+ */
 const over = curry((lens, mapFn, obj) =>
   lens.setter(mapFn(lens.getter(obj)))(obj)
 );
 
-// console.log(over(lens)((s) => s.repeat(3))(author));
-
+/**
+ * Composes two object lenses into one nested lens.
+ *
+ * @param {{ getter: Function, setter: Function }} lens1 - Outer lens.
+ * @param {{ getter: Function, setter: Function }} lens2 - Inner lens.
+ * @returns {{ getter: Function, setter: Function }} Composed lens.
+ * @example
+ * const l = composeTwoLenses(lensProp("c"), lensProp("d"));
+ * view(l)({ c: { d: 3 } }); // 3
+ */
 const composeTwoLenses = (lens1, lens2) => ({
   getter: (obj) => lens2.getter(lens1.getter(obj)),
   setter: curry((newValue, obj) =>
@@ -55,22 +93,3 @@ module.exports = {
   over,
   composeTwoLenses,
 };
-
-// const deepObject = {
-//   a: 1,
-//   b: 2,
-//   c: {
-//     d: 3,
-//     e: {
-//       f: 6,
-//       g: { i: 9, j: { k: 11 } },
-//       h: 8,
-//     },
-//   },
-// };
-
-// const lC = lensProp("c");
-// const lE = lensProp("e");
-// const lClE = composeTwoLenses(lC, lE);
-
-// console.log(view(lClE)(deepObject));

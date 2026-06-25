@@ -1,3 +1,17 @@
+/**
+ * @module Chapter_9/reduceRecursive
+ */
+
+/**
+ * `reduce` implemented with an inner recursive loop over indices.
+ *
+ * @param {Array} arr - Source array.
+ * @param {(acc: *, value: *) => *} fn - Reducer.
+ * @param {*} initialValue - Initial accumulator.
+ * @returns {*} Reduced value.
+ * @example
+ * reduceRecursive([1, 2, 3, 4], (acc, n) => acc + n, 0); // 10
+ */
 const reduceRecursive = (arr, fn, initialValue) => {
   const recursiveLoop = (acc, next, i = 0) => {
     acc = fn(acc, next);
@@ -9,27 +23,27 @@ const reduceRecursive = (arr, fn, initialValue) => {
   return recursiveLoop(initialValue, arr[0]);
 };
 
-// let arr = [1, 2, 3, 4];
-// const fn = (acc, next) => acc + next;
-// console.log(reduceRecursive(arr, fn, 0));
-
+/**
+ * `reduce` implemented with tail recursion over slices. Skips holes in sparse arrays.
+ *
+ * @param {Array} orig - Source array.
+ * @param {(acc: *, value: *, index: number, array: Array) => *} cb - Reducer.
+ * @param {*} accum - Initial accumulator.
+ * @returns {*} Reduced value.
+ * @example
+ * reduceR([1, 2, 3], (acc, n) => acc + n, 0); // 6
+ */
 const reduceR = (orig, cb, accum) => {
-  const reduceLoop = (arr, i) => {
-    return arr.length == 0
-      ? accum
-      : reduceR(
+  const reduceLoop = (arr, i, currentAccum) => {
+    return arr.length === 0
+      ? currentAccum
+      : reduceLoop(
           arr.slice(1),
-          cb,
-          !(0 in arr) ? accum : cb(accum, arr[0], i, orig),
           i + 1,
-          orig
+          !(0 in arr) ? currentAccum : cb(currentAccum, arr[0], i, orig)
         );
   };
-  return reduceLoop(orig, 0);
+  return reduceLoop(orig, 0, accum);
 };
 
-module.exports = reduceR;
-
-// let bbb = [1, 2, , 5, 7, 8, 10, 21, 40];
-// console.log(bbb.reduce((x, y) => x + y, 0)); // 94
-// console.log(reduceR(bbb, (x, y) => x + y, 0));
+module.exports = { reduceRecursive, reduceR };

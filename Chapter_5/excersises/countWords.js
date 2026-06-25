@@ -1,3 +1,7 @@
+/**
+ * @module countWords
+ */
+
 const gettysburg = [
   "Four score and seven years ago our fathers brought forth, ",
   "on this continent, a new nation, conceived in liberty, and ",
@@ -28,8 +32,14 @@ const gettysburg = [
   "people, for the people, shall not perish from the earth.",
 ];
 
-console.log(gettysburg.flatMap((s) => s.split(" ")).length);
-
+/**
+ * Counts words across an array of strings.
+ *
+ * @param {string[]} arr - Array of strings to count words in.
+ * @returns {number} Total word count.
+ * @example
+ * countWords(["hello world", "foo bar"]); // 4
+ */
 const countWords = (arr) => {
   let count = 0;
   for (let i = 0; i < arr.length; i++) {
@@ -39,4 +49,9 @@ const countWords = (arr) => {
   return count;
 };
 
-console.log(countWords(gettysburg));
+module.exports = countWords;
+
+if (require.main === module) {
+  console.log(gettysburg.flatMap((s) => s.split(" ")).length);
+  console.log(countWords(gettysburg));
+}

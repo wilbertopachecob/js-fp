@@ -1,18 +1,31 @@
+/**
+ * @module Chapter_9/exercises/longestCommonSubsequent
+ */
+
 const memoize = require("../../Chapter_6/memoize");
 
+/**
+ * Finds a longest common subsequence between two strings (greedy + memoization).
+ *
+ * @param {string} s1 - First string.
+ * @param {string} s2 - Second string.
+ * @returns {string[]} Characters of one longest common subsequence.
+ * @example
+ * longestCommonSubsequent("INTERNATIONAL", "CONTRACTOR"); // ["N","T","R","A","T","O"]
+ */
 const longestCommonSubsequent = (s1, s2) => {
   const results = [[]];
   let i = 0;
-  let searchForMatches = (s1, s2) => {
-    if (s1.length === 0 || s2.length === 0) {
+  let searchForMatches = (left, right) => {
+    if (left.length === 0 || right.length === 0) {
       return;
     }
-    const index = s2.indexOf(s1[0]);
+    const index = right.indexOf(left[0]);
     if (index !== -1) {
-      results[i].push(s1[0]);
-      return searchForMatches(s1.slice(1), s2.slice(index + 1));
+      results[i].push(left[0]);
+      return searchForMatches(left.slice(1), right.slice(index + 1));
     }
-    return searchForMatches(s1.slice(1), s2);
+    return searchForMatches(left.slice(1), right);
   };
 
   searchForMatches = memoize(searchForMatches);
@@ -27,5 +40,8 @@ const longestCommonSubsequent = (s1, s2) => {
   );
 };
 
-const solution = longestCommonSubsequent("INTERNATIONAL", "CONTRACTOR"); //N...T...R...A...T...O
-console.log(solution);
+module.exports = longestCommonSubsequent;
+
+if (require.main === module) {
+  console.log(longestCommonSubsequent("INTERNATIONAL", "CONTRACTOR"));
+}

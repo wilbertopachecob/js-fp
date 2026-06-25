@@ -1,3 +1,15 @@
+/**
+ * @module calculateFibCalls
+ */
+
+/**
+ * Counts how many times the recursive Fibonacci function is invoked.
+ *
+ * @param {number} num - Fibonacci index to compute.
+ * @returns {number} Total number of recursive calls made.
+ * @example
+ * calculateFibCalls(6); // 25
+ */
 const calculateFibCalls = (num) => {
   let calc = 0;
   const fibonacci = (num) => {
@@ -10,4 +22,8 @@ const calculateFibCalls = (num) => {
   return calc;
 };
 
-console.log(calculateFibCalls(6));
+module.exports = calculateFibCalls;
+
+if (require.main === module) {
+  console.log(calculateFibCalls(6));
+}

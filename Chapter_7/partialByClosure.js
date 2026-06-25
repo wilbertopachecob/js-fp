@@ -1,3 +1,15 @@
+/**
+ * @module Chapter_7/partialByClosure
+ * Partially applies arguments using closures; missing slots can be filled later.
+ * @see src/currying.ts
+ *
+ * @param {Function} fn - Function to partially apply.
+ * @param {...*} args - Initial arguments; use `undefined` for holes.
+ * @returns {Function} Function accepting remaining arguments.
+ * @example
+ * const nonsense = (a, b, c, d, e) => `${a}/${b}/${c}/${d}/${e}`;
+ * partialByClosure(nonsense)(1)(2)(3)(4)(5); // "1/2/3/4/5"
+ */
 const partialByClosure = (fn, ...args) => {
   const partialize =
     (...args1) =>

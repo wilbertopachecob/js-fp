@@ -1,16 +1,23 @@
+/**
+ * @module Chapter_4/exercises/betterFibonnacci
+ */
+
+/**
+ * Tail-recursive fibonacci. Returns the nth value (0-indexed: 0, 1, 1, 2, 3, ...).
+ *
+ * @param {number} n - Index in the fibonacci sequence.
+ * @param {number} [a=0] - Accumulator for the previous value.
+ * @param {number} [b=1] - Accumulator for the current value.
+ * @returns {number} The nth fibonacci number.
+ * @example
+ * fib4(6); // 8
+ */
 const fib4 = (n, a = 0, b = 1) => {
-  console.log({ n, a, b });
   return n === 0 ? a : fib4(n - 1, b, a + b);
 };
 
-const result = fib4(6);
+module.exports = fib4;
 
-result;
-
-//console.log(fib4(6));
-
-// f(6)
-// fib4(5, 0, 1)
-// fib4(4, 1, 2)
-// fib4(3, 2, 4)
-// fib4(2, 4, 8)
+if (require.main === module) {
+  console.log(fib4(6));
+}

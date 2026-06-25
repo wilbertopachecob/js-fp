@@ -1,29 +1,50 @@
+/**
+ * @module Chapter_7/exercises/applyStyle
+ * Curried helper that wraps text in an HTML tag.
+ * @see src/currying.ts
+ *
+ * @param {string} tagName - HTML tag name.
+ * @param {string} text - Text content for the element.
+ * @returns {string} HTML string for the styled element.
+ * @example
+ * const applyStyle = createApplyStyle(document);
+ * const makeBold = applyStyle("b");
+ * makeBold("Montevideo"); // "<b>Montevideo</b>"
+ */
 const curryBind = require("../curryBind");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const {
-  window: { document },
-} = new JSDOM(`<body>
+
+const createApplyStyle = (document) => {
+  let applyStyle = (tagName, text) => {
+    const elem = document.createElement(tagName);
+    elem.appendChild(document.createTextNode(text));
+    return elem.outerHTML;
+  };
+
+  return curryBind(applyStyle);
+};
+
+if (require.main === module) {
+  const {
+    window: { document },
+  } = new JSDOM(`<body>
 <div id="myCity"></div>
 <div id="myCountry"></div>
 </body>`);
 
-let applyStyle = (tagName, text) => {
-  const elem = document.createElement(tagName);
-  elem.appendChild(document.createTextNode(text));
-  return elem.outerHTML;
-};
+  const applyStyle = createApplyStyle(document);
 
-applyStyle = curryBind(applyStyle);
+  const makeBold = applyStyle("b");
+  document.getElementById("myCity").innerHTML = makeBold("Montevideo");
 
-const makeBold = applyStyle("b");
-document.getElementById("myCity").innerHTML = makeBold("Montevideo");
-// <b>Montevideo</b>, to produce Montevideo
-const makeUnderline = applyStyle("u");
-document.getElementById("myCountry").innerHTML = makeUnderline("Uruguay");
-// <u>Uruguay</u>, to produce Uruguay
+  const makeUnderline = applyStyle("u");
+  document.getElementById("myCountry").innerHTML = makeUnderline("Uruguay");
 
-console.log(
-  document.getElementById("myCountry").innerHTML,
-  document.getElementById("myCity").innerHTML
-);
+  console.log(
+    document.getElementById("myCountry").innerHTML,
+    document.getElementById("myCity").innerHTML
+  );
+}
+
+module.exports = createApplyStyle;

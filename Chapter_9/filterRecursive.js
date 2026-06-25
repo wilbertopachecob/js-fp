@@ -1,3 +1,17 @@
+/**
+ * @module Chapter_9/filterRecursive
+ * @see {@link module:src/recursion} — equivalent `filterRecursive` in `src/recursion.ts`
+ */
+
+/**
+ * `filter` implemented with recursion instead of a loop. Skips holes in sparse arrays.
+ *
+ * @param {Array} orig - Source array.
+ * @param {(value: *, index: number, array: Array) => boolean} cb - Predicate.
+ * @returns {Array} Filtered array.
+ * @example
+ * filterRecursive([1, 2, 3, 4], (x) => x % 2); // [1, 3]
+ */
 const filterRecursive = (orig, cb) => {
   const filterLoop = (arr, i) => {
     if (arr.length === 0) {
@@ -12,9 +26,5 @@ const filterRecursive = (orig, cb) => {
   };
   return filterLoop(orig, 0);
 };
-
-// const odd = (x) => x % 2;
-// const arr = [1, 2, 3, 4];
-// console.log(filterRecursive(arr, odd));
 
 module.exports = filterRecursive;

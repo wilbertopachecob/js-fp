@@ -1,3 +1,19 @@
+/**
+ * @module memoize
+ */
+
+/**
+ * Stores the result of a function so repeated calls with the same
+ * arguments return the cached value.
+ *
+ * @param {Function} fn - Function to memoize.
+ * @returns {Function} Memoized wrapper around `fn`.
+ * @example
+ * const slowDouble = (n) => n * 2;
+ * const fastDouble = memoize(slowDouble);
+ * fastDouble(5); // computes
+ * fastDouble(5); // reads from cache
+ */
 const memoize = (fn) => {
   let cache = {};
   const PRIMITIVES = ["number", "string", "boolean"];

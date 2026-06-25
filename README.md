@@ -5,7 +5,7 @@
 ![Node](https://img.shields.io/badge/node-%3E%3D18-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)
 
-Functional programming utilities in **TypeScript** — a curated, tested layer on top of chapter exercises from [*Mastering JavaScript Functional Programming*](https://www.packtpub.com/product/mastering-javascript-functional-programming/9781787282633) by Federico Kereki.
+Functional programming utilities in **TypeScript** and **vanilla JavaScript** — a curated, tested layer on top of chapter exercises from [*Mastering JavaScript Functional Programming*](https://www.packtpub.com/product/mastering-javascript-functional-programming/9781787282633) by Federico Kereki.
 
 > **Archived.** This repository is complete and no longer actively maintained. It remains public as a learning portfolio.
 
@@ -14,23 +14,36 @@ Functional programming utilities in **TypeScript** — a curated, tested layer o
 ```bash
 npm install          # install dependencies
 npm run build        # compile TypeScript from src/ to dist/
-npm run test:all     # build, then run all 47 unit tests
+npm run test:all     # build, then run all 259 unit tests
+npm run test:chapters # run 212 chapter JavaScript tests only
+npm run test:ts      # build, then run 47 TypeScript tests only
 npm run demo -- list # show available CLI demos
 npm run demo -- memoize  # run the memoize demo
 ```
+
+## Two flavors
+
+| Flavor | Path | For |
+|--------|------|-----|
+| **TypeScript** | [`src/`](src/) → [`dist/`](dist/) | npm package consumers, typed APIs, IDE autocomplete |
+| **Vanilla JS** | [`Chapter_*/`](Chapter_1/) | Book-aligned reference code with JSDoc and co-located tests |
+
+Chapter files use CommonJS (`require` / `module.exports`), JSDoc comments, and sibling `*.test.js` files. The TypeScript layer in `src/` mirrors the same concepts with types and a single published entry point.
 
 ## Project structure
 
 | Path | Purpose |
 |------|---------|
-| [`src/`](src/) | TypeScript source — the public API |
+| [`src/`](src/) | TypeScript source — the public npm API |
 | [`dist/`](dist/) | Compiled JavaScript + `.d.ts` declarations |
 | [`tests/`](tests/) | TypeScript unit tests grouped by topic (47 tests) |
+| [`Chapter_*/`](Chapter_1/) | Book chapter code in vanilla JS with JSDoc + `*.test.js` (212 tests) |
 | [`examples/`](examples/) | Runnable demos |
 | [`bin/js-fp.js`](bin/js-fp.js) | CLI for running demos |
-| [`Chapter_*/`](Chapter_1/) | Original book exercises in JavaScript (reference) |
 
 ## Usage
+
+### TypeScript (npm package)
 
 ```typescript
 import { memoize, compose, Maybe } from 'js-fp';
@@ -47,6 +60,30 @@ const shout = compose(
 console.log(shout('hello')); // HELLO!
 
 console.log(Maybe.of(5).map((x) => x * 2).toString()); // Just(10)
+```
+
+### Vanilla JavaScript (chapter modules)
+
+Each chapter file is self-contained with JSDoc and a matching test file:
+
+```javascript
+const memoize = require('./Chapter_6/memoize');
+const compose = require('./Chapter_8/compose');
+
+const fib = memoize((n) => (n <= 1 ? n : fib(n - 1) + fib(n - 2)));
+console.log(fib(10)); // 55
+
+const shout = compose(
+  (s) => `${s}!`,
+  (s) => s.toUpperCase()
+);
+console.log(shout('hello')); // HELLO!
+```
+
+Run chapter tests:
+
+```bash
+npm run test:chapters
 ```
 
 CommonJS:
@@ -77,8 +114,10 @@ The build runs `tsc-alias` so compiled `dist/` files use relative paths at runti
 |---------|-------------|
 | `npm run build` | Compile `src/` → `dist/` (rewrites `@/` aliases) |
 | `npm run build:webpack` | Bundle with Webpack using `@` → `src` alias |
-| `npm test` | Run tests (requires prior build) |
-| `npm run test:all` | Build + run 47 unit tests |
+| `npm test` | Run all tests (TypeScript + chapter JS) |
+| `npm run test:all` | Build + run 259 unit tests |
+| `npm run test:ts` | Build + run 47 TypeScript tests |
+| `npm run test:chapters` | Run 212 chapter JavaScript tests |
 | `npm run demo -- <name>` | Run a CLI demo |
 | `npm run docs` | Generate TypeDoc into `docs/` |
 | `npm run lint` | Run ESLint on `src/`, `tests/`, and config files |
@@ -138,4 +177,4 @@ GPL-3.0 — see [LICENSE](LICENSE).
 
 ## Attributions
 
-Exercise implementations based on *Mastering JavaScript Functional Programming* by Federico Kereki (Packt). Original chapter code preserved in `Chapter_*/`; typed API lives in `src/`.
+Exercise implementations based on *Mastering JavaScript Functional Programming* by Federico Kereki (Packt). Chapter code lives in `Chapter_*/` with JSDoc and tests; the typed npm API lives in `src/`.

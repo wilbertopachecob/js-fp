@@ -1,11 +1,41 @@
+/**
+ * @module Chapter_10/prism/prism
+ */
+
+/**
+ * Reads a property when present on an object.
+ *
+ * @param {string} attr - Property name.
+ * @param {object} obj - Source object.
+ * @returns {*|undefined} Property value or `undefined`.
+ * @example
+ * getFieldP("a", { a: 1 }); // 1
+ */
 const getFieldP = (attr, obj) => (obj && attr in obj ? obj[attr] : undefined);
 
+/**
+ * Shallow-updates a property when present; otherwise returns a shallow copy.
+ *
+ * @param {string} attr - Property name.
+ * @param {*} newValue - New value.
+ * @param {object} obj - Source object.
+ * @returns {object} Updated or copied object.
+ * @example
+ * setFieldP("a", 2, { a: 1, b: 3 }); // { a: 2, b: 3 }
+ */
 const setFieldP = (attr, newValue, obj) =>
   obj && attr in obj ? { ...obj, [attr]: newValue } : { ...obj };
 
-//instead of generating a new copy of an object with deepClone we generate a new obj with the changed value
-//the rest of the attrs are pointers to the original obj data. This way of persisten data
-//saves computation time. See https://facebook.github.io/immutable- js/ for more info
+/**
+ * Immutably sets a nested value, sharing unchanged branches (structural sharing).
+ *
+ * @param {Array<string|number>} path - Path segments.
+ * @param {*} newValue - Value to set.
+ * @param {object|Array} obj - Source structure.
+ * @returns {object|Array} New structure with the update.
+ * @example
+ * setIn(["d", "f"], "Frijoles", { d: { f: 555, g: 666 } });
+ */
 const setIn = (path, newValue, obj) => {
   const newObj = Number.isInteger(path[0]) ? [] : {};
 
@@ -18,26 +48,15 @@ const setIn = (path, newValue, obj) => {
   return newObj;
 };
 
-let myObj1 = {
-  a: 111,
-  b: 222,
-  c: 333,
-  d: {
-    e: 444,
-    f: 555,
-    g: {
-      h: 666,
-      i: 777,
-    },
-    j: [{ k: 100 }, { k: 200 }, { k: 300 }],
-  },
-};
-
-// console.log(setIn(["d", "f"], "Frijoles", myObj1));
-// console.log(myObj.d === myObj2.d); // false
-// console.log(myObj.d.f === myObj2.d.f); // false
-// console.log(myObj.d.g === myObj2.d.g); // true
-
+/**
+ * Immutably deletes a nested key, sharing unchanged branches.
+ *
+ * @param {Array<string|number>} path - Path segments.
+ * @param {object|Array} obj - Source structure.
+ * @returns {object|Array} New structure without the key at `path`.
+ * @example
+ * deleteIn(["d", "f"], { d: { f: 555, g: 666 } }); // { d: { g: 666 } }
+ */
 const deleteIn = (path, obj) => {
   const newObj = Number.isInteger(path[0]) ? [] : {};
   Object.keys(obj).forEach((key) => {
@@ -51,4 +70,12 @@ const deleteIn = (path, obj) => {
   return newObj;
 };
 
-// console.log(deleteIn(["d", "f"], myObj1));
+module.exports = { getFieldP, setFieldP, setIn, deleteIn };
+
+if (require.main === module) {
+  const myObj1 = {
+    a: 111,
+    d: { e: 444, f: 555, g: { h: 666, i: 777 } },
+  };
+  console.log(setIn(["d", "f"], "Frijoles", myObj1));
+}

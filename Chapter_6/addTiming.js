@@ -1,8 +1,23 @@
+/**
+ * @module addTiming
+ */
+
 const myLogger = (text, fnName, start, end) => {
   console.log(`${fnName} - ${text} - ${end - start}`);
 };
 const myTimer = () => performance.now();
 
+/**
+ * Logs how long a function takes to run.
+ *
+ * @param {Function} fn - Function to wrap.
+ * @param {Function} [timer=myTimer] - Returns a timestamp in milliseconds.
+ * @param {Function} [logger=myLogger] - Logs timing information.
+ * @returns {Function} Wrapped function with timing logs.
+ * @example
+ * const timed = addTiming((n) => n * 2);
+ * timed(5);
+ */
 const addTiming =
   (fn, timer = myTimer, logger = myLogger) =>
   (...args) => {

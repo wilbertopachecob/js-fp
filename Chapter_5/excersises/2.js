@@ -1,3 +1,7 @@
+/**
+ * @module generateListExercise
+ */
+
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const {
@@ -13,6 +17,15 @@ const characters = [
 ];
 
 const checkPlayer = (elem) => ["chess", "checkers"].includes(elem.plays);
+
+/**
+ * Builds a `<ul>` of character names filtered by game preference.
+ *
+ * @param {Array<{name: string, plays: string}>} arr - Character records.
+ * @returns {HTMLUListElement} Unordered list of matching names.
+ * @example
+ * generateList(characters).childNodes.length; // 3
+ */
 const generateList = (arr) =>
   arr
     .filter(checkPlayer)
@@ -26,4 +39,8 @@ const generateList = (arr) =>
       return acc;
     }, document.createElement("ul"));
 
-// console.log(generateList(characters).childNodes);
+module.exports = generateList;
+
+if (require.main === module) {
+  console.log(generateList(characters).childNodes);
+}

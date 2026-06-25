@@ -1,3 +1,16 @@
+/**
+ * @module promisify
+ */
+
+/**
+ * Turns a callback-style function into one that returns a Promise.
+ *
+ * @param {Function} fn - Callback-style function `(err, data) => void`.
+ * @returns {Function} Promisified function.
+ * @example
+ * const readFilePromise = promisify(fs.readFile);
+ * await readFilePromise("file.txt", "utf8");
+ */
 const promisify =
   (fn) =>
   (...args) =>

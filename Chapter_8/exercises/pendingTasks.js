@@ -1,3 +1,14 @@
+/**
+ * @module Chapter_8/exercises/pendingTasks
+ * Pipeline that finds pending task ids for a person.
+ * @see src/composition.ts
+ *
+ * @param {{ byPerson?: Array }} tasks - Task registry.
+ * @param {string} name - Person responsible for the tasks.
+ * @returns {number[]} Pending task ids.
+ * @example
+ * pendingTasks(allTasks, "FK"); // [555, 999]
+ */
 const pipeline = require("../pipeline");
 const getField = require("../../Chapter_6/getField.js");
 const { flip2 } = require("../../Chapter_7/flip");
@@ -29,9 +40,7 @@ const allTasks = {
   ],
 };
 
-let map = pipeline(demethodize1, flip2, curry)(Array.prototype.map);
-// map = flip2(map);
-// map = curry(map);
+const map = pipeline(demethodize1, flip2, curry)(Array.prototype.map);
 const getIds = map(getField("id"));
 const filterPendingTasks = (arr = []) => arr.filter((elem) => !elem.done);
 const searchPerson = (arr = [], name) =>
@@ -45,6 +54,12 @@ const pendingTasks = ({ byPerson: arr = [] }, name) =>
     getIds
   )(arr, name);
 
-const result = pendingTasks(allTasks, "FK");
-console.log(result);
-// console.log(getField("byPerson")(allTasks));
+if (require.main === module) {
+  const result = pendingTasks(allTasks, "FK");
+  console.log(result);
+}
+
+module.exports = pendingTasks;
+module.exports.allTasks = allTasks;
+module.exports.filterPendingTasks = filterPendingTasks;
+module.exports.searchPerson = searchPerson;

@@ -1,4 +1,17 @@
+/**
+ * @module Chapter_9/recursiveDir
+ */
+
 const fs = require("fs");
+
+/**
+ * Recursively walks a directory and logs entries (skips dotfiles).
+ *
+ * @param {string} path - Directory path to traverse.
+ * @returns {void}
+ * @example
+ * recursiveDir("./Chapter_9");
+ */
 const recursiveDir = (path) => {
   console.log(path);
   fs.readdirSync(path).forEach((entry) => {
@@ -18,4 +31,8 @@ const recursiveDir = (path) => {
   });
 };
 
-recursiveDir(__dirname);
+module.exports = recursiveDir;
+
+if (require.main === module) {
+  recursiveDir(__dirname);
+}

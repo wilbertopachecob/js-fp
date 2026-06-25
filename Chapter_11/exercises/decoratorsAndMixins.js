@@ -1,3 +1,10 @@
+/**
+ * @module Chapter_11/exercises/decoratorsAndMixins
+ */
+
+/**
+ * Base class used in the mixin exercise.
+ */
 class Foo {
   constructor(fooValue) {
     this.fooValue = fooValue;
@@ -6,6 +13,16 @@ class Foo {
     console.log("something: foo... ", this.fooValue);
   }
 }
+
+/**
+ * Mixin factory that adds a `barValue` and `somethingElse` to a base class.
+ *
+ * @param {typeof Foo} BaseClass - Class to extend.
+ * @returns {typeof Foo} Extended class with bar behavior.
+ * @example
+ * const FooBar = addBar(Foo);
+ * new FooBar(22, 9).somethingElse(); // logs bar value
+ */
 const addBar = (BaseClass) =>
   class BarX extends BaseClass {
     constructor(fooValue, barValue) {
@@ -17,7 +34,11 @@ const addBar = (BaseClass) =>
     }
   };
 
-const fooBar = new (addBar(Foo))(22, 9);
-fooBar.doSomething(); // something: foo... 22
-fooBar.somethingElse(); // something else: bar... 9
-console.log(Object.keys(fooBar)); // ["fooValue", "barValue"]
+module.exports = { Foo, addBar };
+
+if (require.main === module) {
+  const fooBar = new (addBar(Foo))(22, 9);
+  fooBar.doSomething();
+  fooBar.somethingElse();
+  console.log(Object.keys(fooBar));
+}

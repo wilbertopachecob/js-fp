@@ -1,18 +1,27 @@
+/**
+ * @module Chapter_9/exercises/someR
+ */
+
+/**
+ * Returns whether any element satisfies `fn`, implemented recursively.
+ *
+ * @param {Array} arr - Array to test.
+ * @param {(value: *) => boolean} fn - Predicate.
+ * @returns {boolean} True when at least one element passes.
+ * @example
+ * someR([1, 2, 3, 5], (x) => x % 2); // true
+ */
 const someR = (arr, fn) => {
-  const someLoop = (arr) => {
-    if (arr.length === 0) {
+  const someLoop = (items) => {
+    if (items.length === 0) {
       return false;
     }
-    if (fn(arr[0])) {
+    if (fn(items[0])) {
       return true;
     }
-    return someLoop(arr.slice(1));
+    return someLoop(items.slice(1));
   };
   return someLoop(arr);
 };
 
 module.exports = someR;
-
-// const odd = (x) => x % 2;
-// console.log(someR([1, 2, 3, 5], odd));
-// console.log(someR([0, 2], odd));

@@ -12,6 +12,8 @@
     "build:webpack": "webpack",
     "prepare": "npm run build",
     "test": "jest",
+    "test:ts": "npm run build && jest --testMatch='**/tests/**/*.test.ts'",
+    "test:chapters": "jest --testMatch='**/Chapter_*/**/*.test.js'",
     "test:all": "npm run build && jest",
     "test:coverage": "npm run build && jest --coverage",
     "demo": "npm run build && node bin/js-fp.js",

@@ -1,3 +1,14 @@
+/**
+ * @module Chapter_7/partialCurryingByClosure
+ * Partial currying implemented with closures instead of `bind`.
+ * @see src/currying.ts
+ *
+ * @param {Function} fn - Function to partially curry.
+ * @returns {Function} Function accepting remaining arguments in one or more calls.
+ * @example
+ * const sum3 = (a, b, c) => a + b + c;
+ * partialCurryingByClosure(sum3)(1)(2)(3); // 6
+ */
 const partialCurryingByClosure = (fn) => {
   const curryize =
     (...args1) =>

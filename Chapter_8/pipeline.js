@@ -1,3 +1,13 @@
+/**
+ * @module Chapter_8/pipeline
+ * Runs functions left to right and passes the result to the next one.
+ * @see src/composition.ts
+ *
+ * @param {...Function} fns - Functions to run in pipeline order.
+ * @returns {Function} Pipeline function.
+ * @example
+ * pipeline((x) => x * 2, (x) => x + 1)(3); // 7
+ */
 const pipeTwo = require("./pipeTwo");
 
 const pipeline = (...fns) =>
@@ -26,8 +36,11 @@ const pipelineDeclarative2 =
 
 const double = (x) => x * 2;
 
-// console.log(pipelineDeclarative2(double, double, double)(2));
-//(...args) => ((...args) => f(g(...args))(g(...args))
+if (require.main === module) {
+  console.log(pipelineDeclarative2(double, double, double)(2));
+}
 
 module.exports = pipeline2;
 module.exports.pipeline = pipeline2;
+module.exports.pipelineDeclarative = pipelineDeclarative;
+module.exports.pipelineDeclarative2 = pipelineDeclarative2;

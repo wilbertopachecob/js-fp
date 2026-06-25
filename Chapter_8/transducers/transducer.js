@@ -1,20 +1,37 @@
+/**
+ * @module Chapter_8/transducers/transducer
+ * Composable transducers for map and filter over reducers.
+ * @see src/transducers.ts
+ *
+ * @example
+ * const doubleEvens = compose(filter(isEven), map(double));
+ * [1, 2, 3, 4, 5, 6].reduce(doubleEvens(arrayConcat), []); // [4, 8, 12]
+ */
 const compose = require("../compose");
 
+/**
+ * @param {Function} fn - Mapping function.
+ * @returns {Function} Map transducer.
+ */
 const map = (fn) => (step) => (acc, next) => step(acc, fn(next));
+
+/**
+ * @param {Function} predicate - Filter predicate.
+ * @returns {Function} Filter transducer.
+ */
 const filter = (predicate) => (step) => (acc, next) =>
   predicate(next) ? step(acc, next) : acc;
-
-// const compose =
-//   (...fns) =>
-//   (x) =>
-//     fns.reduceRight((y, f) => f(y), x);
 
 const isEven = (n) => n % 2 === 0;
 const double = (n) => n * 2;
 
 const doubleEvens = compose(filter(isEven), map(double));
 const arrayConcat = (a, c) => a.concat([c]);
-const xform = doubleEvens(arrayConcat);
-const result = [1, 2, 3, 4, 5, 6].reduce(xform, []);
 
-console.log(result);
+if (require.main === module) {
+  const xform = doubleEvens(arrayConcat);
+  const result = [1, 2, 3, 4, 5, 6].reduce(xform, []);
+  console.log(result);
+}
+
+module.exports = { map, filter, doubleEvens, arrayConcat };

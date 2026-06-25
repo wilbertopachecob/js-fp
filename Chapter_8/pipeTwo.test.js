@@ -1,31 +1,23 @@
 const pipeTwo = require("./pipeTwo");
 
-describe("pipeTwo - ", () => {
-  let dummy = {};
-  beforeEach(() => {
-    dummy = {
-      fn1: () => {},
-      fn2: () => {},
-    };
-  });
-  it("should call fns with the rigth params", () => {
-    jest.spyOn(dummy, "fn1").mockReturnValue(1);
-    jest.spyOn(dummy, "fn2").mockReturnValue(2);
-    const { fn1, fn2 } = dummy;
+describe("pipeTwo", () => {
+  it("runs the first function then passes its result to the second", () => {
+    const fn1 = jest.fn((x) => x + 1);
+    const fn2 = jest.fn((x) => x * 2);
     const p = pipeTwo(fn1, fn2);
-    const result = p(3);
-    expect(fn1).toHaveBeenCalledWith(2);
-    expect(fn2).toHaveBeenCalledWith(3);
-    expect(result).toBe(1);
+
+    expect(p(3)).toBe(8);
+    expect(fn1).toHaveBeenCalledWith(3);
+    expect(fn2).toHaveBeenCalledWith(4);
   });
-  it("should work with multiple params", () => {
-    jest.spyOn(dummy, "fn1").mockReturnValue(1);
-    jest.spyOn(dummy, "fn2").mockReturnValue(2);
-    const { fn1, fn2 } = dummy;
+
+  it("forwards all arguments to the first function", () => {
+    const fn1 = jest.fn((a, b, c) => a + b + c);
+    const fn2 = jest.fn((x) => x * 2);
     const p = pipeTwo(fn1, fn2);
-    const result = p(3, 4, 5);
-    expect(fn1).toHaveBeenCalledWith(2);
-    expect(fn2).toHaveBeenCalledWith(3, 4, 5);
-    expect(result).toBe(1);
+
+    expect(p(3, 4, 5)).toBe(24);
+    expect(fn1).toHaveBeenCalledWith(3, 4, 5);
+    expect(fn2).toHaveBeenCalledWith(12);
   });
 });

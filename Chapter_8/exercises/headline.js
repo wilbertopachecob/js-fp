@@ -1,3 +1,14 @@
+/**
+ * @module Chapter_8/exercises/headline
+ * Pipeline that title-cases each word in a headline string.
+ * @see src/composition.ts
+ *
+ * @param {string} text - Input headline.
+ * @returns {string} Title-cased headline.
+ * @example
+ * headline("Alice's ADVENTURES in WoNdErLaNd");
+ * // "Alice's Adventures In Wonderland"
+ */
 const demethodize = require("../../Chapter_6/demethodize");
 const curry = require("../../Chapter_7/curryBind");
 const { flip2 } = require("../../Chapter_7/flip");
@@ -15,4 +26,8 @@ const headline = pipeline(
   arrayToString
 );
 
-console.log(headline("Alice's ADVENTURES in WoNdErLaNd"));
+if (require.main === module) {
+  console.log(headline("Alice's ADVENTURES in WoNdErLaNd"));
+}
+
+module.exports = headline;

@@ -1,4 +1,15 @@
+/**
+ * @module Chapter_12/functor
+ * @see {@link module:src/algebraic/functor} — equivalent types in `src/algebraic/functor.ts`
+ */
+
 const VALUE = Symbol;
+
+/**
+ * Base wrapper storing a value in a private symbol slot.
+ *
+ * @template T
+ */
 class Container {
   constructor(value) {
     this[VALUE] = value;
@@ -20,10 +31,13 @@ class Container {
   }
 }
 
-// of :: Functor f ⇒ a → f a
-// Functor.toString :: Functor f ⇒ f a ⇝ String
-// Functor.valueOf :: Functor f ⇒ f a ⇝ a
-// Functor.map :: Functor f ⇒ f a ⇝ (a → b) → f a → f b
+/**
+ * Functor wrapper with `map` that returns a new `Functor`.
+ *
+ * @template T
+ * @example
+ * Functor.of(5).map((n) => n + 1).toString(); // "Functor(6)"
+ */
 class Functor extends Container {
   static of(x) {
     return new Functor(x);

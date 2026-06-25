@@ -1,10 +1,23 @@
+/**
+ * @module Chapter_9/exercises/everyR
+ */
+
+/**
+ * Returns whether every element satisfies `fn`, implemented recursively.
+ *
+ * @param {Array} arr - Array to test.
+ * @param {(value: *) => boolean} fn - Predicate.
+ * @returns {boolean} True when all elements pass.
+ * @example
+ * everyR([2, 4, 6], (x) => x % 2 === 0); // true
+ */
 const everyR = (arr, fn) => {
-  const everyLoop = (arr) => {
-    if (arr.length === 0) {
+  const everyLoop = (items) => {
+    if (items.length === 0) {
       return true;
     }
-    if (fn(arr[0])) {
-      return everyLoop(arr.slice(1));
+    if (fn(items[0])) {
+      return everyLoop(items.slice(1));
     }
     return false;
   };
@@ -12,6 +25,3 @@ const everyR = (arr, fn) => {
 };
 
 module.exports = everyR;
-
-// const odd = (x) => x % 2;
-// console.log(everyR([1, 2, 5, 7], odd));

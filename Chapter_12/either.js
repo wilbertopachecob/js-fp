@@ -1,16 +1,31 @@
+/**
+ * @module Chapter_12/either
+ * @see {@link module:src/algebraic/either} — equivalent `Either` in `src/algebraic/either.ts`
+ */
+
 const { VALUE } = require("./functor");
 const Monad = require("./monad");
 
+/**
+ * Stores an error or failure value.
+ *
+ * @extends Monad
+ */
 class Left extends Monad {
   isLeft() {
     return true;
   }
 
-  map(fn) {
+  map(_fn) {
     return this;
   }
 }
 
+/**
+ * Stores a successful value.
+ *
+ * @extends Monad
+ */
 class Right extends Monad {
   isLeft() {
     return false;
@@ -21,6 +36,13 @@ class Right extends Monad {
   }
 }
 
+/**
+ * Represents success (`Right`) or failure (`Left`).
+ *
+ * @example
+ * Either.of(null, 42).isLeft(); // false
+ * Either.of("error", null).isLeft(); // true
+ */
 class Either extends Monad {
   constructor(left, right) {
     return right === undefined || right === null

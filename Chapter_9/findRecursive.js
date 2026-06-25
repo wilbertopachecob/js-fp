@@ -1,12 +1,21 @@
+/**
+ * @module Chapter_9/findRecursive
+ */
+
+/**
+ * Finds the first element matching `fn` using recursion.
+ *
+ * @param {Array} arr - Array to search.
+ * @param {(value: *) => boolean} fn - Predicate.
+ * @returns {*|undefined} First matching element, or `undefined` if none.
+ * @example
+ * findRecursive([1, 12, 5, 22], (x) => x >= 20 && x <= 29); // 22
+ */
 const findRecursive = (arr, fn) => {
   if (arr.length === 0) {
-    return -1;
+    return undefined;
   }
   return fn(arr[0]) ? arr[0] : findRecursive(arr.slice(1), fn);
 };
 
 module.exports = findRecursive;
-
-// let aaa = [1, 12, , , 5, 22, 9, 60];
-// const isTwentySomething = (x) => 20 <= x && x <= 29;
-// console.log(findRecursive(aaa, isTwentySomething)); // 22

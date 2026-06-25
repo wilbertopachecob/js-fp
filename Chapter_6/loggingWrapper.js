@@ -1,3 +1,17 @@
+/**
+ * @module loggingWrapper
+ */
+
+/**
+ * Logs when a function starts, finishes, or throws an error.
+ *
+ * @param {Function} fn - Function to wrap.
+ * @param {Function} [logger=console.log] - Logger function.
+ * @returns {Function} Wrapped function with logging.
+ * @example
+ * const logged = addLogging((x) => x * 2, console.log);
+ * logged(5); // logs start and return value
+ */
 const addLogging =
   (fn, logger = console.log) =>
   (...args) => {
