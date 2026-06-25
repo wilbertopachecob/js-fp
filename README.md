@@ -12,11 +12,11 @@ Functional programming utilities in **TypeScript** — a curated, tested layer o
 ## Quick start
 
 ```bash
-npm install
-npm run build
-npm run test:all
-npm run demo -- list
-npm run demo -- memoize
+npm install          # install dependencies
+npm run build        # compile TypeScript from src/ to dist/
+npm run test:all     # build, then run all 47 unit tests
+npm run demo -- list # show available CLI demos
+npm run demo -- memoize  # run the memoize demo
 ```
 
 ## Project structure
