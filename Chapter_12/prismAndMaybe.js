@@ -1,5 +1,6 @@
 /**
  * @module Chapter_12/prismAndMaybe
+ * Combines prisms (optional focused views) with Maybe (safe missing-value handling).
  */
 
 const Maybe = require("./maybe");
@@ -16,7 +17,7 @@ class ConstantP {
 }
 
 /**
- * Previews a value through a prism lens, returning a `Maybe`.
+ * Previews a value through a prism, returning a Maybe (Just if present, Nothing if not).
  *
  * @param {Function} prismAttr - Prism lens function.
  * @param {object} obj - Target object.

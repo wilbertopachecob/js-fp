@@ -32,7 +32,8 @@ class Container {
 }
 
 /**
- * Functor wrapper with `map` that returns a new `Functor`.
+ * A Functor is a wrapper you can transform with `.map()` without unwrapping first.
+ * Like `Array.map`, but for one value in a box — apply a function inside, get a new box back.
  *
  * @template T
  * @example

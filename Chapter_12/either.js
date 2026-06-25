@@ -37,7 +37,9 @@ class Right extends Monad {
 }
 
 /**
- * Represents success (`Right`) or failure (`Left`).
+ * Either is a box for a result that succeeded or failed.
+ * `Right` = success value; `Left` = error. Used instead of throwing — callers
+ * check `.isLeft()` and handle both paths explicitly.
  *
  * @example
  * Either.of(null, 42).isLeft(); // false

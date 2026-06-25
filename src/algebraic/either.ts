@@ -32,7 +32,9 @@ class Right<R> extends Functor<R> implements EitherValue<never, R> {
 export type EitherInstance<L, R> = Left<L> | Right<R>;
 
 /**
- * Represents success (`Right`) or failure (`Left`).
+ * Either is a box for a result that succeeded or failed.
+ * `Right` = success value; `Left` = error. Used instead of throwing — callers
+ * check `.isLeft()` and handle both paths explicitly.
  *
  * @example
  * Either.of(null, 42).isLeft(); // false

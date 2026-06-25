@@ -1,5 +1,6 @@
 /**
- * Base wrapper for values that support `map`.
+ * A Functor is a wrapper you can transform with `.map()` without unwrapping first.
+ * Like `Array.map`, but for one value in a box — apply a function inside, get a new box back.
  */
 export class Functor<T> {
   constructor(public readonly value: T) {}
@@ -23,7 +24,9 @@ export class Functor<T> {
 }
 
 /**
- * A functor that also supports `chain` (flatMap).
+ * A Monad is a Functor that also supports `.chain()` (flatMap).
+ * Simple terms: a box that carries a value plus extra context (e.g. "might be missing").
+ * Used to chain pipeline steps without null checks or nested wrappers piling up.
  */
 export class Monad<T> extends Functor<T> {
   static override of<U>(value: U): Monad<U> {

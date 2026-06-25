@@ -1,6 +1,6 @@
 /**
  * @module Chapter_8/compose
- * Runs functions right to left (last function runs first).
+ * Compose runs functions right to left — `compose(f, g)(x)` is the same as `f(g(x))`.
  * @see src/composition.ts
  *
  * @param {...Function} fns - Functions to compose.

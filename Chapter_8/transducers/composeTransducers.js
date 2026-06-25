@@ -1,6 +1,6 @@
 /**
  * @module Chapter_8/transducers/composeTransducers
- * Combines two transducers into one pipeline.
+ * Chains two transducers so their transforms run in one pass before the reducer.
  * @see src/transducers.ts
  *
  * @param {Function} transducerOne - Outer transducer.

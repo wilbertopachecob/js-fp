@@ -1,7 +1,9 @@
 import { Either, EitherValue } from "@/algebraic/either";
 
 /**
- * Runs a function safely and returns an Either instead of throwing.
+ * Try runs a function and wraps the outcome in an Either instead of throwing.
+ * Success becomes `Right`; a caught exception becomes `Left`. Useful when you
+ * want error handling as data rather than control flow via try/catch.
  *
  * @example
  * Try.of(() => 42).isLeft(); // false

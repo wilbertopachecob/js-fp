@@ -2,6 +2,12 @@
 type Fn = (...args: any[]) => any;
 
 /**
+ * Higher-order functions take or return other functions.
+ * These wrappers change how a function runs (cache results, run once, log, etc.)
+ * without rewriting the original logic.
+ */
+
+/**
  * Stores the result of a function so repeated calls with the same
  * arguments return the cached value.
  *

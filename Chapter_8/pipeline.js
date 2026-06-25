@@ -1,6 +1,6 @@
 /**
  * @module Chapter_8/pipeline
- * Runs functions left to right and passes the result to the next one.
+ * Pipeline runs functions left to right, passing each result to the next — like Unix pipes for plain functions.
  * @see src/composition.ts
  *
  * @param {...Function} fns - Functions to run in pipeline order.

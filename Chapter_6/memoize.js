@@ -1,5 +1,6 @@
 /**
  * @module memoize
+ * Higher-order function — takes a function and returns a new one that caches results.
  */
 
 /**

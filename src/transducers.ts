@@ -1,6 +1,11 @@
 import type { Reducer, Transducer } from "@/types";
 
 /**
+ * Transducers are reusable transforms you plug into reduce.
+ * They map or filter values in one pass without building intermediate arrays.
+ */
+
+/**
  * Adds one value to an array accumulator.
  */
 export function concat<T>(acc: T[], value: T): T[] {
@@ -9,7 +14,7 @@ export function concat<T>(acc: T[], value: T): T[] {
 }
 
 /**
- * Transducer that maps each value before it reaches the reducer.
+ * Map transducer — applies a function to each value before the reducer sees it.
  */
 export function mapTransducer<T, U, A>(
   mapFn: (value: T) => U
@@ -18,7 +23,7 @@ export function mapTransducer<T, U, A>(
 }
 
 /**
- * Transducer that keeps only values that pass the test.
+ * Filter transducer — drops values that fail the test before the reducer sees them.
  */
 export function filterTransducer<T, A>(
   test: (value: T) => boolean

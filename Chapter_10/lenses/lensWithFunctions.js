@@ -1,5 +1,7 @@
 /**
  * @module Chapter_10/lenses/lensWithFunctions
+ * Lenses are focused "windows" into part of a nested object.
+ * They let you get, set, or update one field without manually spreading/copying the rest.
  */
 
 const getField = require("../../Chapter_6/getField");
@@ -33,6 +35,7 @@ class Variable {
 
 /**
  * Builds a functional lens from getter and setter.
+ * A lens pairs "how to read" and "how to write" one piece of data inside a larger structure.
  *
  * @param {Function} getter - `(obj) => value`
  * @param {Function} setter - Curried `(value) => (obj) => newObj`

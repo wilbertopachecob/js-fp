@@ -2,8 +2,11 @@
 type Fn = (...args: any[]) => any;
 
 /**
+ * Currying turns a multi-argument function into one you call one argument at a time.
+ * Each call returns a new function until all arguments are filled — handy for
+ * pre-filling some args and reusing the rest later.
+ *
  * Builds a curried version of a function using `bind`.
- * Call it one argument at a time until all arguments are filled.
  *
  * @example
  * const sum3 = (a: number, b: number, c: number) => a + b + c;
@@ -17,7 +20,8 @@ export function curryBind(fn: Fn): Fn {
 }
 
 /**
- * Partially applies arguments, then returns a new function for the rest.
+ * Partial application — supply some arguments now, get back a function waiting for the rest.
+ * Similar to currying but you can pass several args at once.
  *
  * @example
  * const sum3 = (a: number, b: number, c: number) => a + b + c;
@@ -31,8 +35,8 @@ export function partialCurrying(fn: Fn): Fn {
 }
 
 /**
- * Partially applies arguments using closures.
- * Missing arguments can be filled in later calls.
+ * Partial application via closures — fixed args are remembered; missing ones
+ * can be filled in on later calls.
  */
 export function partialByClosure(fn: Fn, ...fixedArgs: unknown[]): Fn {
   function applyMore(...newArgs: unknown[]): unknown {

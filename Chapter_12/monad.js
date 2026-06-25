@@ -6,7 +6,9 @@
 const { Functor, VALUE, Container } = require("./functor");
 
 /**
- * A functor that also supports `chain` (flatMap) and `ap`.
+ * A Monad is a Functor that also supports `.chain()` (flatMap).
+ * Simple terms: a box that carries a value plus extra context (e.g. "might be missing").
+ * Used to chain pipeline steps without null checks or nested wrappers piling up.
  *
  * @template T
  * @example
@@ -35,7 +37,8 @@ class Monad extends Functor {
     return this.map(fn).unwrap();
   }
   /**
-   * Applicative apply.
+   * Applicative apply — runs a wrapped function on a wrapped value.
+   * Part of the "Applicative" pattern: apply a function inside one box to a value inside another.
    *
    * @param {Monad} m - Wrapped function.
    * @returns {Monad} Result of applying the inner function.

@@ -1,5 +1,7 @@
 /**
  * @module Chapter_9/continuation_passing_style/sumAllC
+ * Continuation-passing style (CPS) passes "what to do next" as a callback instead of
+ * returning directly. Useful for async code and avoiding deep recursion stack overflows.
  */
 
 /**

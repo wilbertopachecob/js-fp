@@ -1,6 +1,7 @@
 /**
  * @module Chapter_8/transducers/transducer
- * Composable transducers for map and filter over reducers.
+ * Transducers are reusable transforms you plug into reduce.
+ * They map or filter values in one pass without building intermediate arrays.
  * @see src/transducers.ts
  *
  * @example

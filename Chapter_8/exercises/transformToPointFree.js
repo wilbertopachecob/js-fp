@@ -1,6 +1,7 @@
 /**
  * @module Chapter_8/exercises/transformToPointFree
- * Point-free pipeline built by composing small data transforms.
+ * Point-free style builds a pipeline by composing functions without naming each step's input.
+ * Here, filter → group → sort is wired with `compose` instead of intermediate variables.
  * @see src/composition.ts
  *
  * @param {Array} things - Input collection.

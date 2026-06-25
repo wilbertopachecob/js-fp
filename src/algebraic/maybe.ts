@@ -33,7 +33,9 @@ class Just<T> extends Functor<T> {
 export type MaybeValue<T> = Nothing | Just<T>;
 
 /**
- * Wraps a value that may be `null` or `undefined`.
+ * Maybe is a box for a value that might be missing (`null`/`undefined`).
+ * `Just` = value is there; `Nothing` = no value. `.map()` skips work when empty,
+ * so you avoid "cannot read property of null" bugs.
  *
  * @example
  * Maybe.of(5).map((n) => n + 1).toString(); // "Just(6)"

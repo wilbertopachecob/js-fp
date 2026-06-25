@@ -1,5 +1,7 @@
 /**
  * @module Chapter_10/prism/prism
+ * Prisms are like lenses, but for optional or sum-type fields (may not exist on every object).
+ * Used to read, set, or delete a branch that might be absent without throwing.
  */
 
 /**

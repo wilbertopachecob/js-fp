@@ -1,6 +1,7 @@
 /**
  * @module Chapter_7/curryBind2
- * Curries a function using `bind`, with an explicit remaining arity.
+ * Currying turns a multi-argument function into one you call one argument at a time.
+ * Each call returns a new function until all arguments are filled.
  * @see src/currying.ts
  *
  * @param {Function} fn - Function to curry.
